@@ -7,10 +7,7 @@ This repository contains a collection of SQL queries designed for the **Adventur
 ```
 📦 AdventureWorks-SQL-Queries
  ┣ 📜 SQL1.sql
- ┣ 📜 sales_queries.sql
- ┣ 📜 inventory_queries.sql
- ┣ 📜 customer_queries.sql
- ┗ 📜 README.md
+ 
 ```
 
 ## 🛠 Prerequisites
