@@ -158,3 +158,15 @@ Select
 From Sales.SalesOrderHeader as s
 group by YEAR(s.OrderDate) 
 Order by YEAR(s.OrderDate);
+
+
+/*
+15.From the following table write a query in SQL to find the contacts who are designated as a manager in various departments.
+Returns ContactTypeID, name. Sort the result set in descending order.
+*/
+
+/*
+16.From the following tables write a query in SQL to make a list of contacts who are designated as 'Purchasing Manager'.
+Return BusinessEntityID, LastName, and FirstName columns.
+Sort the result set in ascending order of LastName, and FirstName.
+*/
