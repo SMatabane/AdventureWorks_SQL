@@ -165,8 +165,36 @@ Order by YEAR(s.OrderDate);
 Returns ContactTypeID, name. Sort the result set in descending order.
 */
 
+Select 
+	p.ContactTypeID as contactType,
+	p.Name as Names
+From 
+	Person.ContactType as p
+
+Where
+	p.Name Like'%manager%'
+Order by
+	p.Name DESC;
+
 /*
 16.From the following tables write a query in SQL to make a list of contacts who are designated as 'Purchasing Manager'.
 Return BusinessEntityID, LastName, and FirstName columns.
 Sort the result set in ascending order of LastName, and FirstName.
 */
+Select
+	p.BusinessEntityID as businessEntity,
+	p.FirstName as firstname,
+	p.LastName as lastname
+From   Person.BusinessEntityContact as pb
+Inner join  Person.Person as p on p.BusinessEntityID=pb.PersonID
+Inner join Person.ContactType pc on pc.ContactTypeID=pb.ContactTypeID
+where pc.ContactTypeID IN(
+		Select
+			pc.ContactTypeID
+	  from Person.ContactType as pc
+	  Where pc.Name='Purchasing Manager'
+	  )
+
+Order by p.FirstName,p.LastName;
+
+
