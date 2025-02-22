@@ -183,18 +183,38 @@ Sort the result set in ascending order of LastName, and FirstName.
 */
 Select
 	p.BusinessEntityID as businessEntity,
-	p.FirstName as firstname,
-	p.LastName as lastname
+	FirstName as firstname,
+	LastName as lastname
 From   Person.BusinessEntityContact as pb
-Inner join  Person.Person as p on p.BusinessEntityID=pb.PersonID
-Inner join Person.ContactType pc on pc.ContactTypeID=pb.ContactTypeID
-where pc.ContactTypeID IN(
-		Select
-			pc.ContactTypeID
-	  from Person.ContactType as pc
-	  Where pc.Name='Purchasing Manager'
-	  )
-
+INNER JOIN Person.ContactType AS pc
+            ON pc.ContactTypeID = pb.ContactTypeID
+        -- Joining Person.BusinessEntityContact with Person.Person based on BusinessEntityID
+        INNER JOIN Person.Person AS p
+            ON p.BusinessEntityID = pb.PersonID
+where  pc.Name='Purchasing Manager'
 Order by p.FirstName,p.LastName;
 
+/*
+17.From the following tables write a query in SQL to retrieve the salesperson for each PostalCode who belongs to a territory and SalesYTD is not zero.
+Return row numbers of each group of PostalCode, last name, salesytd, postalcode column.
+Sort the salesytd of each postalcode group in descending order. Shorts the postalcode in ascending order
+*/
+SELECT 
+    
+    ROW_NUMBER() OVER (PARTITION BY a.PostalCode ORDER BY sp.SalesYTD DESC) "Row Number",
+    p.LastName, 
+    sp.SalesYTD, 
+   
+    a.PostalCode
+FROM Sales.SalesPerson AS sp
+    INNER JOIN Person.Person AS p
+        ON sp.BusinessEntityID = p.BusinessEntityID
+    INNER JOIN Person.BusinessEntityAddress AS pba
+        ON sp.BusinessEntityID = pba.BusinessEntityID
+    INNER JOIN Person.Address AS a
+        ON pba.AddressID = a.AddressID
+
+WHERE sp.TerritoryID IS NOT NULL
+    AND sp.SalesYTD != 0
+Order by a.PostalCode;
 
