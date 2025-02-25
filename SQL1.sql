@@ -218,3 +218,48 @@ WHERE sp.TerritoryID IS NOT NULL
     AND sp.SalesYTD != 0
 Order by a.PostalCode;
 
+
+/*
+18.From the following table write a query in SQL to retrieve the RateChangeDate,
+full name (first name, middle name and last name) and weekly salary (40 hours in a week) of employees.
+In the output the RateChangeDate should appears in date format. Sort the output in ascending order on NameInFull.
+*/
+Select
+    CONVERT(Date,hr.RateChangeDate),
+	CONCAT(p.LastName,',',p.FirstName,' ',p.MiddleName) as fullNames,
+	(hr.Rate*40) as salary
+
+From 
+	Person.Person as p
+Inner join 
+	HumanResources.EmployeePayHistory hr 
+	on p.BusinessEntityID=hr.BusinessEntityID
+Order by fullNames;
+
+/*
+19.From the following tables write a query in SQL to calculate and display the latest weekly salary of each employee.
+Return RateChangeDate, full name (first name, middle name and last name) and weekly salary (40 hours in a week) of employees 
+Sort the output in ascending order on NameInFull.
+*/
+Select
+	CONVERT(Date,hr.RateChangeDate),
+	CONCAT(p.LastName,',',p.FirstName,' ',p.MiddleName) as fullNames,
+	(hr.Rate*40) as salary
+
+From 
+	Person.Person as p
+Inner join 
+	HumanResources.EmployeePayHistory hr 
+	on p.BusinessEntityID=hr.BusinessEntityID
+
+where 
+	hr.RateChangeDate=(
+						select	
+								Max(h.RateChangeDate)
+						From HumanResources.EmployeePayHistory h
+						Where hr.BusinessEntityID=h.BusinessEntityID		
+)
+Order by fullNames;
+
+
+
