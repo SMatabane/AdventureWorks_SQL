@@ -262,4 +262,49 @@ where
 Order by fullNames;
 
 
+/*
+20. From the following table write a query in SQL to find the sum, average, count, minimum, and maximum order quentity for those orders whose id are 43659 and 43664.
+Return SalesOrderID, ProductID, OrderQty, sum, average, count, max, and min order quantity.
+
+*/
+Select 
+	s.SalesOrderID,
+	s.ProductID,
+	s.OrderQty,
+	Sum(s.OrderQty) OVER (PARTITION BY SalesOrderID) as total_Quantity,
+	avg(s.OrderQty) OVER (PARTITION BY SalesOrderID) as Average_Quantity,
+	MIN(s.OrderQty) OVER (PARTITION BY SalesOrderID) as Minimum,
+	MAX(s.OrderQty) OVER (PARTITION BY SalesOrderID) as Maximum,
+	COUNT(s.OrderQty) OVER (PARTITION BY SalesOrderID) as Count_Quantity
+From 
+	Sales.SalesOrderDetail as s
+
+Where 
+	s.SalesOrderID IN(43659,43664)
+
+
+/*
+21. From the following table write a query in SQL to find the sum,
+average, and number of order quantity for those orders whose ids are 43659 and 43664 and product id starting with '71'.
+Return SalesOrderID, OrderNumber,ProductID, OrderQty, sum, average, and number of order quantity.
+*/
+
+Select
+	s.SalesOrderID  as ordernumber,
+	s.ProductID as product_Id,
+	s.OrderQty as OrderQty,
+	sum(s.OrderQty) over (PARTITION BY s.SalesOrderID) as sumQty,
+	AVG(s.OrderQty) over (PARTITION BY s.SalesOrderID) as average,
+	COUNT(s.OrderQty) OVER (PARTITION BY SalesOrderID) as Count_Quantity
+From 
+	Sales.SalesOrderDetail as s
+
+Where 
+	s.SalesOrderID IN(43659,43664) and s.ProductID Like '71%'
+
+
+
+
+
+
 
